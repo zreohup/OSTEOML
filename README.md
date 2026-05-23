@@ -1,12 +1,3 @@
----
-title: OsteoML
-colorFrom: blue
-colorTo: indigo
-sdk: docker
-app_port: 7860
-fullWidth: true
----
-
 # OsteoML
 
 Journal-facing research website and model API for the osteoporosis risk stratification model.
@@ -31,7 +22,7 @@ Open `http://127.0.0.1:8038/`.
 
 ## Free Deployment
 
-Use Hugging Face Spaces with the Docker SDK. The Space reads this README configuration, builds the Dockerfile, and exposes the app on port `7860`.
+Use Hugging Face Spaces with the Docker SDK. The Space builds the Dockerfile and exposes the app on port `7860`.
 
 The same service hosts the website and the `/api/predict` model endpoint.
 

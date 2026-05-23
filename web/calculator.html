@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OsteoML Calculator</title>
+    <meta
+      name="description"
+      content="Standalone osteoporosis risk calculator page connected to the OsteoML model API when available."
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23243cc9'/%3E%3Cpath d='M9 8h14v3H9zm0 6h14v3H9zm0 6h14v3H9z' fill='white'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="calculator-page">
+    <section class="mobile-blocker" aria-live="polite">
+      <span class="brand mobile-blocker-brand"><span class="brand-mark"></span>OSTEOML</span>
+      <h1 data-i18n="mobile.title">Desktop access required</h1>
+      <p data-i18n="mobile.body">
+        This research calculator is optimized for desktop review. Please open it on a laptop or desktop computer.
+      </p>
+    </section>
+
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="OsteoML home">
+        <span class="brand-mark"></span>
+        <span>OSTEOML</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="index.html#model" data-i18n="nav.model">Model</a>
+        <a href="index.html#evidence" data-i18n="nav.evidence">Evidence</a>
+        <a href="calculator.html" aria-current="page" data-i18n="nav.calculator">Calculator</a>
+        <a href="index.html#methods" data-i18n="nav.methods">Methods</a>
+      </nav>
+      <span class="status-pill" id="model-status" data-i18n="status.ready">Ready</span>
+    </header>
+
+    <main>
+      <section class="calculator-page-hero">
+        <p class="eyebrow" data-i18n="calc.eyebrow">Prediction calculator</p>
+        <h1 data-i18n="calc.title">Osteoporosis risk calculator.</h1>
+        <p class="lead" data-i18n="calc.lead">
+          Enter routine clinical variables to estimate bone-status risk and generate native SHAP explanations.
+        </p>
+      </section>
+
+      <section class="calculator-section standalone" id="calculator">
+        <div class="calculator-intro">
+          <p class="eyebrow" data-i18n="calc.inputsEyebrow">Model inputs</p>
+          <h2 data-i18n="calc.inputsTitle">Use the same clinical variable family as the manuscript model.</h2>
+          <p data-i18n="calc.inputsBody">
+            Units follow the modeling matrix: creatinine is µmol/L, calcium is dietary calcium intake in mg/day, and energy is daily kcal intake.
+          </p>
+        </div>
+
+        <div class="calculator-shell">
+          <form id="risk-form" class="risk-form">
+            <label>
+              <span data-i18n="field.sex">Sex</span>
+              <select name="sex">
+                <option value="female" data-i18n="option.female">Female</option>
+                <option value="male" data-i18n="option.male">Male</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="field.race">Race / ethnicity</span>
+              <select name="race">
+                <option value="non_hispanic_white" data-i18n="option.white">Non-Hispanic White</option>
+                <option value="non_hispanic_black" data-i18n="option.black">Non-Hispanic Black</option>
+                <option value="mexican_american" data-i18n="option.mexican">Mexican American</option>
+                <option value="other_hispanic" data-i18n="option.hispanic">Other Hispanic</option>
+                <option value="asian" data-i18n="option.asian">Asian / Korean</option>
+                <option value="other" data-i18n="option.otherRace">Other / multi-racial</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="field.age">Age, years</span>
+              <input name="age" type="number" min="40" max="90" step="1" value="66" required />
+            </label>
+            <label>
+              <span data-i18n="field.height">Height, cm</span>
+              <input name="height" type="number" min="120" max="210" step="0.1" value="158" required />
+            </label>
+            <label>
+              <span data-i18n="field.weight">Weight, kg</span>
+              <input name="weight" type="number" min="30" max="180" step="0.1" value="54" required />
+            </label>
+            <label>
+              <span data-i18n="field.waist">Waist, cm</span>
+              <input name="waist" type="number" min="45" max="170" step="0.1" value="82" required />
+            </label>
+            <label>
+              <span data-i18n="field.sbp">Systolic BP, mmHg</span>
+              <input name="sbp" type="number" min="70" max="230" step="1" value="132" required />
+            </label>
+            <label>
+              <span data-i18n="field.dbp">Diastolic BP, mmHg</span>
+              <input name="dbp" type="number" min="40" max="140" step="1" value="78" required />
+            </label>
+            <label>
+              <span data-i18n="field.alp">ALP, U/L</span>
+              <input name="alp" type="number" min="10" max="800" step="1" value="96" required />
+            </label>
+            <label>
+              <span data-i18n="field.creatinine">Creatinine, µmol/L</span>
+              <input name="creatinine" type="number" min="12" max="400" step="0.1" value="72.5" required />
+            </label>
+            <label>
+              <span data-i18n="field.calcium">Calcium intake, mg/day</span>
+              <input name="calcium" type="number" min="0" max="5000" step="1" value="930" required />
+            </label>
+            <label>
+              <span data-i18n="field.energy">Energy intake, kcal/day</span>
+              <input name="energy" type="number" min="300" max="8000" step="1" value="1900" required />
+            </label>
+            <label>
+              <span data-i18n="field.activity">Physical activity</span>
+              <select name="activity">
+                <option value="moderate" data-i18n="option.moderate">Moderate</option>
+                <option value="low" data-i18n="option.low">Low</option>
+                <option value="high" data-i18n="option.high">High</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="field.education">Education</span>
+              <select name="education">
+                <option value="1" data-i18n="option.edu1">Less than high school</option>
+                <option value="2" data-i18n="option.edu2">High school</option>
+                <option value="3" selected data-i18n="option.edu3">Some college</option>
+                <option value="4" data-i18n="option.edu4">College graduate</option>
+              </select>
+            </label>
+            <label>
+              <span data-i18n="field.income">Income</span>
+              <select name="income">
+                <option value="1" data-i18n="option.income1">Low</option>
+                <option value="2" selected data-i18n="option.income2">Lower-middle</option>
+                <option value="3" data-i18n="option.income3">Upper-middle</option>
+                <option value="4" data-i18n="option.income4">High</option>
+              </select>
+            </label>
+            <button type="submit" data-i18n="action.calculateShap">Calculate risk and SHAP</button>
+          </form>
+
+          <aside class="result-panel" aria-live="polite">
+            <div class="result-topline">
+              <p class="eyebrow" data-i18n="result.eyebrow">Result</p>
+              <h3 id="prediction-label" data-i18n="result.waiting">Waiting for calculation</h3>
+              <p id="recommendation" data-i18n="result.initialRecommendation">
+                Complete the form to generate a screening recommendation.<br />
+                完成输入后生成筛查建议。
+              </p>
+            </div>
+
+            <div class="derived">
+              <div>
+                <span data-i18n="metric.bmi">BMI</span>
+                <strong id="bmi-value">--</strong>
+              </div>
+              <div>
+                <span data-i18n="metric.ost">OST</span>
+                <strong id="ost-value">--</strong>
+              </div>
+            </div>
+
+            <div class="probabilities">
+              <div class="prob-row normal">
+                <span data-i18n="class.normal">Normal</span>
+                <div><i id="bar-normal"></i></div>
+                <b id="prob-normal">--</b>
+              </div>
+              <div class="prob-row osteopenia">
+                <span data-i18n="class.osteopenia">Osteopenia</span>
+                <div><i id="bar-osteopenia"></i></div>
+                <b id="prob-osteopenia">--</b>
+              </div>
+              <div class="prob-row osteoporosis">
+                <span data-i18n="class.osteoporosis">Osteoporosis</span>
+                <div><i id="bar-osteoporosis"></i></div>
+                <b id="prob-osteoporosis">--</b>
+              </div>
+            </div>
+
+            <p class="panel-note" id="mode-note" data-i18n="note.research">
+              Results are intended for research communication and screening discussion, not diagnosis. Race/ethnicity is included for calibration and population transportability assessment.
+            </p>
+          </aside>
+        </div>
+
+        <section class="shap-card" aria-live="polite">
+          <div>
+            <p class="eyebrow" data-i18n="shap.eyebrow">Local SHAP</p>
+            <h3 id="shap-title" data-i18n="shap.initialTitle">Native SHAP plots appear after calculation</h3>
+            <p id="shap-caption" data-i18n="shap.initialCaption">
+              Click the calculate button to generate multiple native SHAP plots. This may take several seconds.
+            </p>
+          </div>
+          <div class="shap-plot" id="shap-plot"></div>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

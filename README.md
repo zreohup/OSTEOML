@@ -5,9 +5,9 @@ Journal-facing research website and model API for the osteoporosis risk stratifi
 ## Contents
 
 - `web/`: website, calculator UI, Python model API, and model artifacts.
-- `web/model_artifacts/model.pkl`: saved stacking model, tracked with Git LFS.
-- `web/model_artifacts/scaler_source.csv`: source matrix used to reconstruct the scaler.
-- `web/model_artifacts/shap_background.csv`: SHAP background source.
+- `web/model/model.pkl`: saved stacking model, tracked with Git LFS.
+- `web/model/scaler_source.csv`: source matrix used to reconstruct the scaler.
+- `web/model/shap_background.csv`: SHAP background source.
 - `render.yaml`: Render free web-service blueprint.
 - `requirements.txt`: Python runtime dependencies.
 

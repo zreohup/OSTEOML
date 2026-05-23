@@ -32,7 +32,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 WEB_ROOT = Path(__file__).resolve().parent
-ARTIFACT_DIR = WEB_ROOT / "model_artifacts"
+ARTIFACT_DIR = WEB_ROOT / "model"
 MODEL_PATH = ARTIFACT_DIR / "model.pkl"
 RAW_DATA_PATH = ARTIFACT_DIR / "scaler_source.csv"
 SHAP_BACKGROUND_PATH = ARTIFACT_DIR / "shap_background.csv"

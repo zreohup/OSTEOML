@@ -51,7 +51,7 @@ curl http://127.0.0.1:8038/api/health
 The API loads:
 
 ```text
-web/model_artifacts/model.pkl
+web/model/model.pkl
 ```
 
 The browser calculator automatically uses this API when it is available. If the API is not running, it falls back to the transparent frontend demonstration score.

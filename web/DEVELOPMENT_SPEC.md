@@ -56,7 +56,7 @@
 
 ## 4. 计算逻辑
 
-当 `http://127.0.0.1:8038/api/predict` 可访问时，计算器调用本地模型 API。该 API 实际加载保存的 `web/model_artifacts/model.pkl`，并按 18 个 LASSO 入模特征顺序构建输入矩阵：
+当 `http://127.0.0.1:8038/api/predict` 可访问时，计算器调用本地模型 API。该 API 实际加载保存的 `web/model/model.pkl`，并按 18 个 LASSO 入模特征顺序构建输入矩阵：
 
 ```text
 BMI, Weight, BRI, Waist, Age, Height, ALP, Race, Creatinine, eGFR,

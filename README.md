@@ -1,3 +1,12 @@
+---
+title: OsteoML
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+fullWidth: true
+---
+
 # OsteoML
 
 Journal-facing research website and model API for the osteoporosis risk stratification model.
@@ -8,7 +17,7 @@ Journal-facing research website and model API for the osteoporosis risk stratifi
 - `web/model/model.pkl`: saved stacking model, tracked with Git LFS.
 - `web/model/scaler_source.csv`: source matrix used to reconstruct the scaler.
 - `web/model/shap_background.csv`: SHAP background source.
-- `render.yaml`: Render free web-service blueprint.
+- `Dockerfile`: Hugging Face Spaces Docker deployment.
 - `requirements.txt`: Python runtime dependencies.
 
 ## Local Run
@@ -22,11 +31,7 @@ Open `http://127.0.0.1:8038/`.
 
 ## Free Deployment
 
-Use Render's free web service tier and connect this GitHub repository. Render will read `render.yaml`, install dependencies, and run:
-
-```bash
-python web/model_service.py
-```
+Use Hugging Face Spaces with the Docker SDK. The Space reads this README configuration, builds the Dockerfile, and exposes the app on port `7860`.
 
 The same service hosts the website and the `/api/predict` model endpoint.
 

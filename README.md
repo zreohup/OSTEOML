@@ -1,3 +1,8 @@
+---
+sdk: docker
+app_port: 7860
+---
+
 # OsteoML
 
 Journal-facing research website and model API for the osteoporosis risk stratification model.
